@@ -1,20 +1,20 @@
 #!/bin/bash
 
-MOUNT_DIR="/your/mount/point"
+# CONFIG
+MOUNT_DIR="/your/mount/point"   # バックアップを保存するディレクトリのマウント先
+SRC_DIR="/want/to/backup/dir"   # バックアップしたいディレクトリ
+BK_DIR="backupdir"              # バックアップ時に作成するディレクトリ名
+EXCLUDE_FILE=""                 # 除外ファイル指定、rsyncコマンドで指定します。例 : --exclude=your/path
 
-SRC_DIR="/want/to/backup/dir"
-BK_DIR="backupdir"
-
-EXCLUDE_FILE=""  # 除外ファイル指定 --exclude=your/path
 W_DIR=`echo $SRC_DIR | awk -F/ '{print $(NF)}'`
 
 # マウントポイントを確認し、マウントされていなければマウントする
 check_mount() {
     df | grep "$MOUNT_DIR" > /dev/null
     if [ $? -ne 0 ]; then
-        break
-    else
         mount $MOUNT_DIR || exit 1
+    else
+        break
     fi
 }
 
